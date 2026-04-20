@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solo Per Torre – Torre de' Passeri</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terra: #8B4513;
+    --stone: #C4A882;
+    --cream: #F7F0E6;
+    --deep: #2C1810;
+    --green: #3D5A3E;
+    --light-green: #6B8F6C;
+    --accent: #A0522D;
+    --white: #FDFAF6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--white);
+    color: var(--deep);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(253, 250, 246, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(139, 69, 19, 0.15);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  .nav-logo-placeholder {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--terra);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--deep);
+    font-weight: 700;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--deep);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--green);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem 5rem;
+    position: relative;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -60px;
+    width: 120px;
+    height: 100%;
+    background: var(--green);
+    clip-path: polygon(0 0, 50% 0, 100% 50%, 50% 100%, 0 100%);
+    z-index: 1;
+  }
+
+  .hero-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--stone);
+  }
+
+  .hero-subtitle {
+    color: rgba(255,255,255,0.75);
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 380px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    width: fit-content;
+  }
+
+  .hero-cta:hover {
+    background: white;
+    color: var(--green);
+    border-color: white;
+  }
+
+  .hero-right {
+    background: var(--cream);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8rem 5rem 4rem 6rem;
+    position: relative;
+  }
+
+  .hero-logo-large {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid var(--stone);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 60px rgba(139,69,19,0.15);
+    margin-bottom: 2rem;
+  }
+
+  .hero-logo-large .placeholder-text {
+    font-size: 0.65rem;
+    color: var(--stone);
+    letter-spacing: 0.05em;
+    text-align: center;
+    line-height: 1.6;
+    padding: 1rem;
+  }
+
+  .hero-logo-large .placeholder-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.4;
+  }
+
+  .hero-comune {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--terra);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-anno {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--stone);
+    text-transform: uppercase;
+  }
+
+  .hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--stone);
+    margin: 1.5rem auto;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--deep);
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 6rem 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    color: var(--deep);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  /* CHI SIAMO */
+  #chi-siamo {
+    background: var(--white);
+  }
+
+  .chi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .chi-text p {
+    color: var(--deep);
+    opacity: 0.75;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .chi-visual {
+    position: relative;
+  }
+
+  .chi-card {
+    background: var(--cream);
+    padding: 3rem;
+    border-left: 3px solid var(--terra);
+    position: relative;
+  }
+
+  .chi-card-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--deep);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .chi-card-attr {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terra);
+  }
+
+  /* CANDIDATI */
+  #candidati {
+    background: var(--cream);
+  }
+
+  .candidati-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .candidati-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .candidato-card {
+    background: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: default;
+  }
+
+  .candidato-card:hover {
+    border-color: var(--terra);
+    transform: translateY(-4px);
+  }
+
+  .candidato-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 2px solid var(--stone);
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--terra);
+  }
+
+  .candidato-nome {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--deep);
+    margin-bottom: 0.3rem;
+  }
+
+  .candidato-ruolo {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  /* sindaco in evidenza */
+  .candidato-card.sindaco {
+    background: var(--green);
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    text-align: left;
+    padding: 2.5rem;
+  }
+
+  .candidato-card.sindaco .candidato-avatar {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    color: white;
+    font-size: 1.8rem;
+  }
+
+  .candidato-card.sindaco .candidato-nome {
+    color: white;
+    font-size: 1.3rem;
+  }
+
+  .candidato-card.sindaco .candidato-ruolo {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+  }
+
+  .candidato-card.sindaco .candidato-bio {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-top: 0.75rem;
+  }
+
+  /* PROGRAMMA */
+  #programma {
+    background: var(--white);
+  }
+
+  .programma-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .programma-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid rgba(139,69,19,0.15);
+  }
+
+  .programma-item {
+    padding: 2.5rem;
+    border-right: 1px solid rgba(139,69,19,0.15);
+    border-bottom: 1px solid rgba(139,69,19,0.15);
+    transition: background 0.3s;
+  }
+
+  .programma-item:hover {
+    background: var(--cream);
+  }
+
+  .programma-item:nth-child(3n) {
+    border-right: none;
+  }
+
+  .programma-numero {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--stone);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .programma-titolo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--deep);
+    margin-bottom: 0.75rem;
+  }
+
+  .programma-desc {
+    font-size: 0.83rem;
+    color: var(--deep);
+    opacity: 0.65;
+    line-height: 1.7;
+  }
+
+  /* CONTATTI */
+  #contatti {
+    background: var(--deep);
+    padding: 5rem 0;
+  }
+
+  #contatti .section-label {
+    color: var(--stone);
+  }
+
+  #contatti .section-title {
+    color: white;
+  }
+
+  .contatti-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contatti-text p {
+    color: rgba(255,255,255,0.6);
+    line-height: 1.8;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .contatti-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contatti-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .contatti-link:hover { color: var(--stone); }
+
+  .contatti-link-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  /* Form */
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 0.8rem 1rem;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--stone);
+  }
+
+  .form-group textarea { height: 100px; }
+
+  .form-submit {
+    background: var(--terra);
+    color: white;
+    border: none;
+    padding: 0.9rem 2rem;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+  }
+
+  .form-submit:hover { background: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-left > * {
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-tag { animation-delay: 0.1s; }
+  .hero-title { animation-delay: 0.2s; }
+  .hero-subtitle { animation-delay: 0.3s; }
+  .hero-cta { animation-delay: 0.4s; }
+
+  .hero-right > * {
+    animation: fadeUp 0.8s ease both;
+    animation-delay: 0.5s;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-left::after { display: none; }
+    .hero-left { padding: 7rem 2rem 3rem; }
+    .hero-right { padding: 3rem 2rem; }
+    .chi-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .programma-grid { grid-template-columns: 1fr; }
+    .programma-item { border-right: none; }
+    .contatti-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .candidato-card.sindaco { grid-column: span 1; flex-direction: column; text-align: center; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-placeholder">LOGO</div>
+    <span class="nav-brand">Solo Per Torre</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#chi-siamo">Chi siamo</a></li>
+    <li><a href="#candidati">Candidati</a></li>
+    <li><a href="#programma">Programma</a></li>
+    <li><a href="#contatti">Contatti</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Elezioni Comunali 2025 · Torre de' Passeri</p>
+    <h1 class="hero-title">Solo<br><em>Per Torre</em></h1>
+    <p class="hero-subtitle">Una lista civica nata dall'amore per il nostro paese. Nessuna appartenenza di partito, nessun interesse che non sia quello della comunità.</p>
+    <a href="#chi-siamo" class="hero-cta">Scopri di più</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-logo-large">
+      <div class="placeholder-icon">⚑</div>
+      <div class="placeholder-text">Inserire qui<br>il logo della lista</div>
+    </div>
+    <p class="hero-comune">Torre de' Passeri</p>
+    <p class="hero-anno">Comune · Provincia di Pescara</p>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">"Prendersi cura della propria comunità"</p>
+  </div>
+</section>
+
+<!-- CHI SIAMO -->
+<section id="chi-siamo">
+  <div class="container">
+    <div class="chi-grid">
+      <div class="chi-text">
+        <p class="section-label">Chi siamo</p>
+        <h2 class="section-title">Una lista che nasce dalla comunità</h2>
+        <p>Solo Per Torre è una lista civica che nasce dall'amore per il nostro paese, non da calcoli politici o appartenenze di partito. Siamo persone che vivono a Torre de' Passeri, che ne conoscono le strade, le famiglie, le difficoltà e le potenzialità.</p>
+        <p>La nostra candidatura è guidata dalla convinzione che prendersi cura della propria comunità non sia un onore riservato a pochi, ma un dovere che ognuno di noi può scegliere di raccogliere.</p>
+        <p>Portiamo competenze diverse — amministrative, tecniche, progettuali — con l'unico obiettivo di metterle al servizio del paese.</p>
+      </div>
+      <div class="chi-visual">
+        <div class="chi-card">
+          <p class="chi-card-quote">"Sono consapevole di essere all'inizio, di avere molto da imparare e di dover guadagnare la fiducia di questo paese giorno per giorno, non in un discorso."</p>
+          <span class="chi-card-attr">Pierpaolo Croce · Candidato Consigliere</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CANDIDATI -->
+<section id="candidati">
+  <div class="container">
+    <div class="candidati-header">
+      <p class="section-label">La squadra</p>
+      <h2 class="section-title">I candidati</h2>
+    </div>
+    <div class="candidati-grid">
+
+      <!-- SINDACO IN EVIDENZA -->
+      <div class="candidato-card sindaco">
+        <div class="candidato-avatar">GM</div>
+        <div>
+          <p class="candidato-nome">Giovanni Mancini</p>
+          <p class="candidato-ruolo">Candidato Sindaco</p>
+          <p class="candidato-bio">Ci conosciamo da quando eravamo piccoli — la stima non nasce da un programma elettorale, si costruisce negli anni guardando come uno si comporta.</p>
+        </div>
+      </div>
+
+      <!-- CANDIDATI CONSIGLIERI -->
+      <div class="candidato-card">
+        <div class="candidato-avatar">PC</div>
+        <p class="candidato-nome">Pierpaolo Croce</p>
+        <p class="candidato-ruolo">Ricercatore · Università di Chieti</p>
+      </div>
+
+      <div class="candidato-card">
+        <div class="candidato-avatar">·</div>
+        <p class="candidato-nome">Candidato 3</p>
+        <p class="candidato-ruolo">Da inserire</p>
+      </div>
+
+      <div class="candidato-card">
+        <div class="candidato-avatar">·</div>
+        <p class="candidato-nome">Candidato 4</p>
+        <p class="candidato-ruolo">Da inserire</p>
+      </div>
+
+      <div class="candidato-card">
+        <div class="candidato-avatar">·</div>
+        <p class="candidato-nome">Candidato 5</p>
+        <p class="candidato-ruolo">Da inserire</p>
+      </div>
+
+      <div class="candidato-card">
+        <div class="candidato-avatar">·</div>
+        <p class="candidato-nome">Candidato 6</p>
+        <p class="candidato-ruolo">Da inserire</p>
+      </div>
+
+      <div class="candidato-card">
+        <div class="candidato-avatar">·</div>
+        <p class="candidato-nome">Candidato 7</p>
+        <p class="candidato-ruolo">Da inserire</p>
+      </div>
+
+      <div class="candidato-card">
+        <div class="candidato-avatar">·</div>
+        <p class="candidato-nome">Candidato 8</p>
+        <p class="candidato-ruolo">Da inserire</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMMA -->
+<section id="programma">
+  <div class="container">
+    <div class="programma-header">
+      <p class="section-label">Il programma</p>
+      <h2 class="section-title">Le nostre priorità</h2>
+    </div>
+    <div class="programma-grid">
+
+      <div class="programma-item">
+        <div class="programma-numero">01</div>
+        <h3 class="programma-titolo">Energia e risparmio</h3>
+        <p class="programma-desc">Comunità energetiche locali, microgrid e teleriscaldamento per ridurre le bollette delle famiglie. A partire dagli edifici pubblici, come la piscina comunale.</p>
+      </div>
+
+      <div class="programma-item">
+        <div class="programma-numero">02</div>
+        <h3 class="programma-titolo">Fondi e progetti</h3>
+        <p class="programma-desc">Intercettare bandi europei e nazionali per portare risorse al comune. I piccoli comuni spesso lasciano fondi sul tavolo per mancanza di chi sappia come prenderli.</p>
+      </div>
+
+      <div class="programma-item">
+        <div class="programma-numero">03</div>
+        <h3 class="programma-titolo">Contrasto allo spopolamento</h3>
+        <p class="programma-desc">Incentivi per giovani coppie, recupero degli immobili abbandonati nel centro storico, interlocuzione con i programmi regionali per i piccoli comuni.</p>
+      </div>
+
+      <div class="programma-item">
+        <div class="programma-numero">04</div>
+        <h3 class="programma-titolo">Spazi per i giovani</h3>
+        <p class="programma-desc">Recupero di spazi pubblici da destinare ad hub culturali e aggregativi: sala prove, spazio studio, luoghi di incontro gestiti dai giovani stessi.</p>
+      </div>
+
+      <div class="programma-item">
+        <div class="programma-numero">05</div>
+        <h3 class="programma-titolo">Commercio di prossimità</h3>
+        <p class="programma-desc">Un paese che perde i propri negozi perde identità prima ancora che servizi. Agevolazioni per le nuove attività, mercato locale periodico, valorizzazione delle produzioni locali.</p>
+      </div>
+
+      <div class="programma-item">
+        <div class="programma-numero">06</div>
+        <h3 class="programma-titolo">Servizi alla persona</h3>
+        <p class="programma-desc">Attenzione agli anziani, ai giovani e alle famiglie. Accessibilità degli uffici comunali, trasporto, assistenza di prossimità.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTATTI -->
+<section id="contatti">
+  <div class="container">
+    <div class="contatti-grid">
+      <div class="contatti-text">
+        <p class="section-label">Contatti</p>
+        <h2 class="section-title">Parliamoci</h2>
+        <p>Siamo disponibili per qualsiasi domanda, proposta o confronto. La politica locale si fa anche così — ascoltando.</p>
+        <div class="contatti-links">
+          <a href="mailto:info@soloperrorre.it" class="contatti-link">
+            <span class="contatti-link-icon">✉</span>
+            info@soloportorre.it
+          </a>
+          <a href="#" class="contatti-link">
+            <span class="contatti-link-icon">f</span>
+            Facebook — Solo Per Torre
+          </a>
+          <a href="#" class="contatti-link">
+            <span class="contatti-link-icon">▶</span>
+            Instagram — @soloportorre
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" placeholder="Il tuo nome">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="La tua email">
+        </div>
+        <div class="form-group">
+          <label>Messaggio</label>
+          <textarea placeholder="Scrivici..."></textarea>
+        </div>
+        <button class="form-submit">Invia messaggio</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Solo Per Torre · Torre de' Passeri (PE)</p>
+  <p>Lista civica per le elezioni comunali</p>
+</footer>
+
+</body>
+</html>
