@@ -591,6 +591,86 @@
     letter-spacing: 0.05em;
   }
 
+  /* TICKER */
+  .ticker-panel {
+    margin-top: 1.5rem;
+    border: 1px solid rgba(139,69,19,0.15);
+    background: var(--white);
+  }
+
+  .ticker-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    padding: 0.6rem 1.2rem;
+    border-bottom: 1px solid rgba(139,69,19,0.1);
+    background: var(--cream);
+  }
+
+  .ticker-window {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ticker-window::before,
+  .ticker-window::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 40px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .ticker-window::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--white), transparent);
+  }
+
+  .ticker-window::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--white), transparent);
+  }
+
+  .ticker-track {
+    display: flex;
+    flex-direction: column;
+    animation: tickerScroll 18s linear infinite;
+  }
+
+  .ticker-track:hover {
+    animation-play-state: paused;
+  }
+
+  .ticker-item {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(139,69,19,0.07);
+    flex-shrink: 0;
+  }
+
+  .ticker-nome {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--deep);
+    margin-bottom: 0.2rem;
+  }
+
+  .ticker-frase {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--terra);
+    opacity: 0.75;
+    font-style: italic;
+  }
+
+  @keyframes tickerScroll {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+
   /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -645,7 +725,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
-    <p class="hero-tag">Elezioni Comunali 2026 · Torre de' Passeri</p>
+    <p class="hero-tag">Elezioni Comunali 2025 · Torre de' Passeri</p>
     <h1 class="hero-title">Solo<br><em>Per Torre</em></h1>
     <p class="hero-subtitle">Una lista civica nata dall'amore per il nostro paese. Nessuna appartenenza di partito, nessun interesse che non sia quello della comunità.</p>
     <a href="#chi-siamo" class="hero-cta">Scopri di più</a>
@@ -673,12 +753,51 @@
         <p>La nostra candidatura è guidata dalla convinzione che prendersi cura della propria comunità non sia un onore riservato a pochi, ma un dovere che ognuno di noi può scegliere di raccogliere.</p>
         <p>Portiamo competenze diverse — amministrative, tecniche, progettuali — con l'unico obiettivo di metterle al servizio del paese.</p>
       </div>
-      <!-- <div class="chi-visual">
+      <div class="chi-visual">
         <div class="chi-card">
           <p class="chi-card-quote">"Sono consapevole di essere all'inizio, di avere molto da imparare e di dover guadagnare la fiducia di questo paese giorno per giorno, non in un discorso."</p>
           <span class="chi-card-attr">Pierpaolo Croce · Candidato Consigliere</span>
         </div>
-      </div> -->
+        <div class="ticker-panel">
+          <p class="ticker-label">La nostra lista</p>
+          <div class="ticker-window">
+            <div class="ticker-track" id="tickerTrack">
+              <div class="ticker-item">
+                <span class="ticker-nome">Giovanni Mancini</span>
+                <span class="ticker-frase">Candidato Sindaco — una vita al servizio della comunità</span>
+              </div>
+              <div class="ticker-item">
+                <span class="ticker-nome">Pierpaolo Croce</span>
+                <span class="ticker-frase">Ricercatore — portare competenza e idee nuove al paese</span>
+              </div>
+              <div class="ticker-item">
+                <span class="ticker-nome">Candidato 3</span>
+                <span class="ticker-frase">La tua frase qui</span>
+              </div>
+              <div class="ticker-item">
+                <span class="ticker-nome">Candidato 4</span>
+                <span class="ticker-frase">La tua frase qui</span>
+              </div>
+              <div class="ticker-item">
+                <span class="ticker-nome">Candidato 5</span>
+                <span class="ticker-frase">La tua frase qui</span>
+              </div>
+              <div class="ticker-item">
+                <span class="ticker-nome">Candidato 6</span>
+                <span class="ticker-frase">La tua frase qui</span>
+              </div>
+              <div class="ticker-item">
+                <span class="ticker-nome">Candidato 7</span>
+                <span class="ticker-frase">La tua frase qui</span>
+              </div>
+              <div class="ticker-item">
+                <span class="ticker-nome">Candidato 8</span>
+                <span class="ticker-frase">La tua frase qui</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -809,7 +928,7 @@
         <div class="contatti-links">
           <a href="mailto:info@soloperrorre.it" class="contatti-link">
             <span class="contatti-link-icon">✉</span>
-            info@solopertorre.it
+            info@soloportorre.it
           </a>
           <a href="#" class="contatti-link">
             <span class="contatti-link-icon">f</span>
@@ -817,7 +936,7 @@
           </a>
           <a href="#" class="contatti-link">
             <span class="contatti-link-icon">▶</span>
-            Instagram — @solopertorre
+            Instagram — @soloportorre
           </a>
         </div>
       </div>
@@ -846,5 +965,13 @@
   <p>Lista civica per le elezioni comunali</p>
 </footer>
 
+<script>
+  // Duplica gli elementi del ticker per uno scorrimento infinito senza salti
+  const track = document.getElementById('tickerTrack');
+  if (track) {
+    const items = track.innerHTML;
+    track.innerHTML = items + items;
+  }
+</script>
 </body>
 </html>
